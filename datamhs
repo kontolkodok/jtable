@@ -1,0 +1,54 @@
+void TampilDataMhsPadaTabel() {
+        try {
+            Con = Konek.getKoneksiDatabase();
+            Stm = Con.createStatement();
+            TampilModelJTabel();
+            Sql = "SELECT biodata_mahasiswa.nim, biodata_mahasiswa.nama AS NamaMahasiswa, " +
+                "program_studi.nama AS ProgramStudi, " +
+                "agama.nama AS NamaAgama, " +
+                "biodata_mahasiswa.tempat_lahir AS TempatLahir, " +
+                "biodata_mahasiswa.tanggal_lahir AS TanggalLahir, " +
+                "biodata_mahasiswa.jenis_kelamin AS JenisKelamin, " +
+                "biodata_mahasiswa.alamat AS Alamat, " +
+                "biodata_mahasiswa.kota AS Kota, " +
+                "propinsi.nama AS NamaProvinsi, " +
+                "biodata_mahasiswa.kode_pos AS KodePos, " +
+                "biodata_mahasiswa.telpon AS Telpon, " +
+                "biodata_mahasiswa.handphone AS HandPhone, " +
+                "biodata_mahasiswa.hobi AS Hobi, " +
+                "biodata_mahasiswa.wali AS Wali, " +
+                "biodata_mahasiswa.alamat_wali AS AlamatWali, " +
+                "biodata_mahasiswa.telpon_wali AS TelponWali, " +
+                "biodata_mahasiswa.tahun_masuk AS TahunMasuk " +
+                "FROM biodata_mahasiswa " +
+                "LEFT OUTER JOIN program_studi ON (biodata_mahasiswa.kode_program_studi = program_studi.kode_jurusan) " +
+                "LEFT OUTER JOIN agama ON (biodata_mahasiswa.kode_agama = agama.kode) " +
+                "LEFT OUTER JOIN propinsi ON (biodata_mahasiswa.kode_propinsi = propinsi.kode)";
+            Rs = Stm.executeQuery(Sql);
+            while (Rs.next()) {
+                Dtm.addRow(new Object[]{
+                    Rs.getString("nim"),
+                    Rs.getString("NamaMahasiswa"),
+                    Rs.getString("ProgramStudi"),
+                    Rs.getString("NamaAgama"),
+                    Rs.getString("TempatLahir"),
+                    Rs.getString("TanggalLahir"),
+                    Rs.getString("JenisKelamin"),
+                    Rs.getString("Alamat"),
+                    Rs.getString("Kota"),
+                    Rs.getString("NamaProvinsi"),
+                    Rs.getString("KodePos"),
+                    Rs.getString("Telpon"),
+                    Rs.getString("HandPhone"),
+                    Rs.getString("Hobi"),
+                    Rs.getString("Wali"),
+                    Rs.getString("AlamatWali"),
+                    Rs.getString("TelponWali"),
+                    Rs.getString("TahunMasuk")
+                });
+                jTable1.setModel(Dtm);
+            }
+        } catch (SQLException e) {
+            System.out.println("Koneksi gagal: " + e.toString());
+        }
+    }
